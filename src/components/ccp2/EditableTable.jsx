@@ -14,46 +14,58 @@ export default class OrdersList extends React.Component {
         super(props);
         this.columns = [{
             title: '编号',
-            dataIndex: 'id'
+            dataIndex: 'id',
+            width:70
         },{
             title: '姓名',
-            dataIndex: 'userName'
+            dataIndex: 'userName',
+            width:80
         },{
             title: '手机号',
-            dataIndex: 'cellphone'
+            dataIndex: 'cellphone',
+            width:120
         },{
             title: '开始时间',
             dataIndex: 'startTime',
+            width:140,
             render:(text) =>{
                 return (moment(text).calendar())
             }
         }, {
             title: '结束时间',
             dataIndex: 'endTime',
+            width:140,
             render:(text) =>{
                 return (moment(text).calendar())
             }
         },{
             title: '开始原因',
-            dataIndex: 'startResource'
+            dataIndex: 'startResource',
+            width:160
         },{
             title: '结束原因',
-            dataIndex: 'endResource'
+            dataIndex: 'endResource',
+            width:160
         },{
             title: '报价',
-            dataIndex: 'startPrice'
+            dataIndex: 'startPrice',
+            width:80
         },{
             title: '成交价',
-            dataIndex: 'endPrice'
+            dataIndex: 'endPrice',
+            width:80
         },{
             title: '备注',
-            dataIndex: 'remark'
+            dataIndex: 'remark',
+            width:120
         },{
             title: '责任人',
-            dataIndex: 'repair'
+            dataIndex: 'repair',
+            width:100
         },{
             title: '状态',
             dataIndex: 'state',
+            width:100,
             render:(text) =>{
                 switch(text) {
                     case -1 :
@@ -67,6 +79,8 @@ export default class OrdersList extends React.Component {
         },{
             title: '操作',
             dataIndex: 'operation',
+            width:200,
+            fixed: 'right',
             render: (text, record) => {
                 return (
                     <OrderOptPad />
@@ -133,6 +147,7 @@ export default class OrdersList extends React.Component {
                     dataSource={this.state.data} 
                     pagination={false}
                     columns={this.columns} 
+                    scroll={{ x: 1550 }}
                 />
                 <Pagination showQuickJumper total={this.state.totalCount} onChange={this.pageChange} style={{marginTop:40,float:"right"}} />
             </div>

@@ -89,41 +89,7 @@ class UserYDJForm extends Component {
     }
 
     setSecondText =(text)=>{
-        const key1 = this.state.firstText;
-        let a = null;
-        switch(key1+text){
-            case "苹果手机" :
-            a = allType.苹果.手机;
-            break;
-            case "苹果平板" :
-            a = allType.苹果.平板;
-            break;
-            case "苹果电脑" :
-            a = allType.苹果.电脑;
-            break;
-            case "苹果配件" :
-            a = allType.苹果.配件;
-            break;
-            case "苹果其他" :
-            a = allType.苹果.其他;
-            break;
-            case "华为手机" :
-            a = allType.华为.手机;
-            break;
-            case "华为平板" :
-            a = allType.华为.平板;
-            break;
-            case "华为电脑" :
-            a = allType.华为.电脑;
-            break;
-            case "华为配件" :
-            a = allType.华为.配件;
-            break;
-            case "华为其他" :
-            a = allType.华为.其他;
-            break;
-
-        }
+        let a = eval('allType.' + this.state.firstText + '.' + text)
         const child = [];
         for(let i in a){
             child.push(<Button onClick={()=>this.setTypeValue(a[i])} style={{marginBottom:20, marginLeft:10}}>{a[i]}</Button>)
@@ -152,8 +118,8 @@ class UserYDJForm extends Component {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
-                xs: { span: 6 },
-                sm: { span: 6 },
+                xs: { span: 8 },
+                sm: { span: 8 },
             },
             wrapperCol: {
                 xs: { span: 16 },

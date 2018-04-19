@@ -1,6 +1,3 @@
-/**
- * Created by hao.cheng on 2017/5/3.
- */
 import React from 'react';
 import { Row, Col, Card, Timeline, Icon, Input, Button, message, Tabs} from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
@@ -23,6 +20,7 @@ export default class Main extends React.Component {
             messageList : [],
             maxMSGId :0,
             websocket : null,
+            msgList : []
         }
     }
 
@@ -57,25 +55,11 @@ export default class Main extends React.Component {
         document.getElementById("addinfo").value = ''
     }
     addMSG =(data)=> {
-        let a = [];
-        a.push(
-                <li className="list-group-item">
-                    <a href="" className="pull-left w-40 mr-m">
-                        <img src={b1} className="img-responsive img-circle" alt="test" />
-                    </a>
-                    <div className="clear" style={{marginLeft:10}}>
-                        <div>
-                            <a href="">{data.userName}</a>
-                            <span style={{float:"right"}}>刚刚</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                        </div>
-                        
-                        <span className="text-muted">{data.content}</span>
-                    </div>
-                </li>
-            );
-        a = a.concat(this.state.messageList);
+        let a = this.state.msgList;
+        a.unshift(data);
         this.setState({
-            messageList : a
+            msgList : a,
+            messageList : this.setmsglist(a)
         })
     }
 
@@ -90,6 +74,7 @@ export default class Main extends React.Component {
     startMessage =()=>{
         CCFetch("/message/list").then(res =>{
             this.setState({
+                msgList : res.data,
                 messageList : this.setmsglist(res.data)
             })
         });
@@ -106,7 +91,8 @@ export default class Main extends React.Component {
                         <div className="clear" style={{marginLeft:10}}>
                             <div>
                                 <a href="">{data[i].userName}</a>
-                                <span style={{float:"right"}}>{moment(data[i].createDate).calendar()}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Icon type="close" style={{fontSize: 15, float:"right"}} onClick={()=>this.deleteMSG(data[i].id, i)} />
+                                <span style={{float:"right"}}>{data[i].createDate ? moment(data[i].createDate).calendar() : '刚刚'}&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </div>
                             <span className="text-muted">{data[i].content}</span>
                         </div>
@@ -128,10 +114,17 @@ export default class Main extends React.Component {
         CCFetch("/message/add",params);
     }
 
-    deleteMSG =(id)=>{
+    deleteMSG =(id, i)=>{
         let params = {};
         params.id = id;
         CCFetch("/message/delete",params);
+        let a = [];
+        a = this.state.msgList;
+        a.splice(i,1);
+        this.setState({
+            msgList : a,
+            messageList : this.setmsglist(a)
+        })
     }
 
     render() {
@@ -140,34 +133,33 @@ export default class Main extends React.Component {
             <div className="gutter-example button-demo">
                 <BreadcrumbCustom />
                 <Row gutter={10}>
-                <Col className="gutter-row" md={8}>
-                    <div className="gutter-box">
-                        <Card bordered={false}>
-                            
-                                <div className="pb-m">
-                                    <h3>消息栏</h3>
-                                </div>
-                                <div style={{height:600,overflowY:"scroll",marginBottom:10}}>
-                                    <a className="card-tool"><Icon type="sync" /></a>
-                                    <ul className="list-group no-border" style={{paddingLeft:0}}>
-                                        {this.state.messageList}
-                                    </ul>
-                                </div>
-                            <div>
-                                <TextArea id="addinfo" style={{height:50, width:"70%"}} placeholder="请输入内容"/>
-                                <Button onClick={this.sendSocket} style={{height:50, width:"20%", marginLeft:10}} type="default">提交</Button>
-                            </div>
-                        </Card>
-                    </div>
-                </Col>
+                
                     <Col className="gutter-row" md={16}>
-                        <div className="gutter-box">
-                            <Card bordered={false} className={'no-padding'}>
-                                <EchartsProjects dddata = {this.state.dddata}/>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col className="gutter-row" md={16}>
+                        <Row gutter={10}>
+                            <Col className="gutter-row" md={24}>
+                                <div className="gutter-box">
+                                    <Card bordered={false} className={'no-padding'}>
+                                        {/* <EchartsProjects dddata = {this.state.dddata}/> */}
+                                        <Tabs
+                                            defaultActiveKey="1"
+                                            tabPosition="left"
+                                            style={{height: 212}}
+                                        >
+                                            <TabPane tab="Tab 1" key="1">Content of tab 1</TabPane>
+                                            <TabPane tab="Tab 2" key="2">Content of tab 2</TabPane>
+                                            <TabPane tab="Tab 3" key="3">Content of tab 3</TabPane>
+                                            <TabPane tab="Tab 4" key="4">Content of tab 4</TabPane>
+                                            <TabPane tab="Tab 5" key="5">Content of tab 5</TabPane>
+                                            <TabPane tab="Tab 6" key="6">Content of tab 6</TabPane>
+                                            <TabPane tab="Tab 7" key="7">Content of tab 7</TabPane>
+                                            <TabPane tab="Tab 8" key="8">Content of tab 8</TabPane>
+                                            <TabPane tab="Tab 9" key="9">Content of tab 9</TabPane>
+                                        </Tabs>
+                                    </Card>
+                                </div>
+                            </Col>
+
+                            <Col className="gutter-row" md={24}>
                         <div className="gutter-box">
                             <Card title="TAB页" bordered={false}>
                                 <Tabs defaultActiveKey="1" style={{height: 430}}>
@@ -212,30 +204,31 @@ export default class Main extends React.Component {
                         </Card>
                     </div>
                 </Col>
-                    {/* <Col className="gutter-row" md={8}>
-                        <div className="gutter-box">
-                            <Card bordered={false}>
-                                <div className="pb-m">
-                                    <h3>访问量统计</h3>
-                                    <small>最近7天用户访问量</small>
-                                </div>
-                                <a className="card-tool"><Icon type="sync" /></a>
-                                <EchartsViews />
-                            </Card>
-                        </div>
+                        </Row>
                     </Col>
+
                     <Col className="gutter-row" md={8}>
-                        <div className="gutter-box">
-                            <Card bordered={false}>
+                    <div className="gutter-box">
+                        <Card bordered={false}>
+                            
                                 <div className="pb-m">
-                                    <h3>访问量统计</h3>
-                                    <small>最近7天用户访问量</small>
+                                    <h3>消息栏</h3>
                                 </div>
-                                <a className="card-tool"><Icon type="sync" /></a>
-                                <EchartsViews />
-                            </Card>
-                        </div>
-                    </Col> */}
+                                <div style={{height:600,overflowY:"scroll",marginBottom:10}}>
+                                    <a className="card-tool"><Icon type="sync" onClick={()=>this.startMessage()}/></a>
+                                    <ul className="list-group no-border" style={{paddingLeft:0}}>
+                                        {this.state.messageList}
+                                    </ul>
+                                </div>
+                            <div>
+                                <TextArea id="addinfo" style={{height:50, width:"70%"}} placeholder="请输入内容"/>
+                                <Button onClick={()=>this.sendSocket()} style={{height:50, width:"20%", marginLeft:10}} type="default">提交</Button>
+                            </div>
+                        </Card>
+                    </div>
+                </Col>
+
+                    
                 </Row>
             </div>
         )
