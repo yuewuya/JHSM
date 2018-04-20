@@ -9,8 +9,7 @@ const allType = {
         "手机" : ["iphoneX","iphone8","iphone7","iphone6",],
         "平板" : ["air2","air3","air4","air5",],
         "电脑" : ["mac1","mac2","mac3","mac4",],
-        "配件" : ["cc1","cc2","cc3","cc4",],
-        "其他" : ["aa1","aa2","aa3","aa4",]
+        "配件" : ["cc1","cc2","cc3","cc4",]
     },
     "华为" : {
         "手机" : ["P20","P10","P9","mate10",],
@@ -66,20 +65,19 @@ class UserYDJForm extends Component {
     }
 
     setFirstContent =()=>{
-        const a = ["华为","苹果","三星","小米","联想","其他"];
         const child = [];
-        for(let i in a){
-            child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setFirstText(a[i])}>{a[i]}</Button>)
+        for(let i in allType){
+            child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setFirstText(i)}>{i}</Button>)
         }
         this.setState({
             firstContent : child
         })
     }
     setFirstText =(text)=>{
-        const a = ["手机","平板","电脑","配件","其他"];
+        const a =eval('allType.' + text);
         const child = [];
         for(let i in a){
-            child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setSecondText(a[i])}>{a[i]}</Button>)
+            child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setSecondText(i)}>{i}</Button>)
         }
         this.setState({
             firstText : text,

@@ -1,12 +1,14 @@
 import React from 'react';
-import { Modal, Input, Popconfirm, Pagination, Menu, Dropdown, Button, Icon } from 'antd';
+import { Modal, Input, Popconfirm, Pagination, Menu, Dropdown, Button, Icon, Divider } from 'antd';
 import {CCFetch} from '../../ccutil/ccfetch'
 import QRCode from 'qrcode.react'
 import PrintProvider,{Print} from 'react-easy-print'
 import PrintTemplate from 'react-print'
+import EditOrderForm from './components/EditOrderForm'
 
 export default class OrderOptPad extends React.Component{
     constructor(props){
+        console.log("-------------r",props.row)
         super(props);
         this.state = {
             visible:false
@@ -36,10 +38,11 @@ export default class OrderOptPad extends React.Component{
               
             // </Dropdown>
             <div>
-                <a className="ant-dropdown-link" onClick={this.print}>
-                        操作<Icon type="down" />
-                </a>
-                <PrintProvider>
+                <a onClick={this.print}>编辑</a>
+                <Divider type="vertical" />
+                <a onClick={this.print}>删除</a>
+                <EditOrderForm assigner={this.props.assigner} row={this.props.row}/>
+                {/* <PrintProvider>
 
                 <Modal visible={this.state.visible}
                         onCancel={this.handleCancel}
@@ -58,7 +61,7 @@ export default class OrderOptPad extends React.Component{
                                 </Print>   
                         
                 </ Modal>
-                </PrintProvider>
+                </PrintProvider> */}
             </div>
         )
     }
