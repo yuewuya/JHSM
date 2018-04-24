@@ -32,6 +32,7 @@ import CCLogin from '../cc/CCLogin'
 import Main from '../components/ccp1/Main'
 import OrdersList from '../components/ccp2/EditableTable'
 import YDJTable from '../components/ccp2/YDJTable'
+import OldPhoneList from '../components/oldPhone/OldPhoneTable'
 
 const WysiwygBundle = (props) => (
     <Bundle load={Wysiwyg}>
@@ -58,8 +59,11 @@ export default class CRouter extends Component {
             <Switch>
                 <Route exact path="/app/dashboard/index" component={(props)=> this.requireUser(<Dashboard />)} />
                 <Route exact path="/app/cc/main" component={Main} />
-                <Route exact path="/app/tab1/table" component={OrdersList} />
-                <Route exact path="/app/tab1/YDJTable" component={YDJTable} />
+                <Route exact path="/app/order/list" component={OrdersList} />
+                <Route exact path="/app/order/YDJList" component={YDJTable} />
+                
+                <Route exact path="/app/oldPhone/list" component={OldPhoneList} />
+
                 <Route exact path="/app/form/basicForm" component={BasicForm} />
                 <Route exact path="/app/table/basicTable" component={BasicTable} />
 

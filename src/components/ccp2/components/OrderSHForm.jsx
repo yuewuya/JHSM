@@ -2,24 +2,21 @@
  * Created by hao.cheng on 2017/4/15.
  */
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Radio, DatePicker, InputNumber, Select, Divider, message,Popconfirm  } from 'antd';
+import { Button, Modal, Form, Input, Radio, DatePicker, InputNumber, Select, Divider, message, Popconfirm  } from 'antd';
 import moment from 'moment'
 import {CCFetch} from '../../../ccutil/ccfetch'
 const FormItem = Form.Item;
 const Option = Select.Option;
 const formItemLayout = {
     labelCol: {
-        xs: { span: 6 },
-        sm: { span: 6 },
+        xs: { span: 6,offset:2 },
+        sm: { span: 6,offset:2 },
     },
     wrapperCol: {
         xs: { span: 14 },
         sm: { span: 14 },
     },
 };
-
-const admin = JSON.parse(localStorage.getItem("admin"))[0];
-
 const CollectionCreateForm = Form.create()(
     (props) => {
         const { visible, onCancel, onCreate, form, assigner, row } = props;
@@ -27,14 +24,15 @@ const CollectionCreateForm = Form.create()(
         return (
             <Modal
                 visible={visible}
-                title="修改订单"
-                okText="确定"
+                title="订单审核"
+                okText="通过"
+                cancelText='取消'
                 onCancel={onCancel}
                 onOk={onCreate}
                 width={400}
-            >
-            <div style={{marginLeft:30}}>
-                <Form layout="vertical">
+            ><div style={{marginLeft:30}}>
+            
+                <Form layout="vertical" >
 
                     <FormItem {...formItemLayout} label="设备型号">
                         {getFieldDecorator('type', {
@@ -57,7 +55,7 @@ const CollectionCreateForm = Form.create()(
                     <FormItem {...formItemLayout} label="承诺时间">
                         {getFieldDecorator('endTime', {
                             rules: [{ required: true, message: '请选择承诺时间!' }],
-                            initialValue: moment(row.endTime)
+                            initialValue: moment().add(3,'h')
                         })(
                             <DatePicker 
                                 showTime
@@ -67,10 +65,10 @@ const CollectionCreateForm = Form.create()(
                         )}
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="实收金额">
-                        {getFieldDecorator('endPrice', {
-                            rules: [{ required: true, message: '请输入实收金额!' }],
-                            initialValue: row.endPrice!=0?row.endPrice:row.startPrice
+                    <FormItem {...formItemLayout} label="预计费用">
+                        {getFieldDecorator('startPrice', {
+                            rules: [{ required: true, message: '请输入预计费用!' }],
+                            initialValue: 0
                         })(
                             <InputNumber style={{marginTop:-10, width:200}}/>
                         )}
@@ -79,7 +77,7 @@ const CollectionCreateForm = Form.create()(
                     <FormItem {...formItemLayout} label="售后保障">
                         {getFieldDecorator('endResource', {
                             rules: [{ required: true, message: '请选择售后保障!' }],
-                            initialValue: row.endResource
+                            initialValue: '当面验收，离店不保'
                         })(
                             <Select style={{marginTop:-10, width:200}}>
                                 <Option value="当面验收，离店不保">当面验收，离店不保</Option>
@@ -95,7 +93,7 @@ const CollectionCreateForm = Form.create()(
                     <FormItem {...formItemLayout} label="责任人">
                         {getFieldDecorator('repair', {
                             rules: [{ required: true, message: '请选择责任人!' }],
-                            initialValue: row.repair
+                            initialValue: '潘华'
                         })(
                             <Select style={{marginTop:-10, width:200}}>
                                 {assigner}
@@ -103,16 +101,15 @@ const CollectionCreateForm = Form.create()(
                         )}
                     </FormItem>
                 </Form>
-            </div>
+                </div>
             </Modal>
         );
     }
 );
 
-class EditOrderForm extends Component {
+class OrderSHForm extends Component {
     state = {
         visible: false,
-        printArea : []
     };
     showModal = () => {
         this.setState({ visible: true });
@@ -131,18 +128,18 @@ class EditOrderForm extends Component {
             param.type = values.type;
             param.startResource = values.startResource;
             param.endTime = values.endTime;
-            param.startPrice = values.endPrice;
+            param.startPrice = values.startPrice;
             param.endResource = values.endResource;
             param.repair = values.repair;
+            param.state = 0;
             CCFetch("/orders/approval", param).then((res) => {
                 if(res.code == 1){
                     this.props.reloadTable(1);
-                    message.success("修改成功")
+                    message.success("审核通过")
                 }else{
-                    message.error("修改失败，请重试或联系CC")
+                    message.error("审核失败，请重试或联系CC")
                 }
             })
-
 
             form.resetFields();
             this.setState({ visible: false });
@@ -151,20 +148,7 @@ class EditOrderForm extends Component {
     saveFormRef = (form) => {
         this.form = form;
     };
-
-    sendSms =()=> {
-        CCFetch("/orders/sendSms", this.props.row).then((res) => {
-            if(res.code == 1){
-                this.props.reloadTable(1);
-                message.success(res.msg)
-            }else{
-                message.error(res.msg)
-            }
-        })
-
-    }
-
-    deleteOrder =()=>{
+    deleteYDJOrder =()=>{
         let param = {};
         param.id = this.props.row.id;
         CCFetch("/orders/delete", param).then((res) => {
@@ -176,31 +160,14 @@ class EditOrderForm extends Component {
             }
         })
     }
-
-    createPrintArea =()=>{
-        window.open("http://localhost:3006/#/printPage/"+this.props.row.id);
-    }
-
     render() {
         return (
             <div>
-                <a onClick={this.showModal}>编辑</a>
-                
-                {this.props.row.state != 2 ? (<Divider type="vertical" />) : ''}
-                {this.props.row.state != 2 ? (
-                    <Popconfirm title="完成该订单并发送短信？" okText="确定" cancelText="取消" onConfirm={this.sendSms}>
-                        <a>完成</a>
-                    </Popconfirm>
-                    ) : ''}
-                
+                <a onClick={this.showModal}>审核</a>
                 <Divider type="vertical" />
-                <a onClick={this.createPrintArea}>打印</a>
-                
-                {admin.role >= 99 ? <Divider type="vertical" /> : ''}
-                {admin.role >= 99 ? <Popconfirm title="确定删除？" okText="删除" cancelText="取消" onConfirm={this.deleteOrder}>
+                <Popconfirm title="确定删除？" okText="删除" cancelText="取消" onConfirm={this.deleteYDJOrder}>
                     <a>删除</a>
-                </Popconfirm> : ''}
-                
+                </Popconfirm>
                 <CollectionCreateForm
                     ref={this.saveFormRef}
                     visible={this.state.visible}
@@ -209,10 +176,9 @@ class EditOrderForm extends Component {
                     assigner={this.props.assigner}
                     row = {this.props.row}
                 />
-                
             </div>
         );
     }
 }
 
-export default EditOrderForm;
+export default OrderSHForm;

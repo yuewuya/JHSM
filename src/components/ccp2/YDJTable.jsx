@@ -5,7 +5,7 @@ import React from 'react';
 import { Table, Input, Popconfirm, Pagination, Menu, Dropdown, Button, Icon, Select } from 'antd';
 import {CCFetch} from '../../ccutil/ccfetch'
 import SearchForm from '../forms/SearchForm'
-import OrderOptPad from './OrderOptPad'
+import OrderSHForm from './components/OrderSHForm'
 import moment from 'moment'
 const Option = Select.Option;
 
@@ -32,10 +32,9 @@ export default class YDJTable extends React.Component {
             dataIndex: 'remark'
         },{
             title: '操作',
-            dataIndex: 'operation',
             render: (text, record) => {
                 return (
-                    <OrderOptPad />
+                    <OrderSHForm row={record} assigner={this.state.adminNames} reloadTable={this.pageChange} />
                 );
             },
         }];
@@ -73,7 +72,7 @@ export default class YDJTable extends React.Component {
     pageChange =(pageNumber)=> {
         let param = this.state.param;
         param.pageNum = pageNumber-1;
-        CCFetch("/orders/list", param).then((res) => {
+        CCFetch("/orders/YDJorders", param).then((res) => {
             this.setData(res,param)
         })
     }

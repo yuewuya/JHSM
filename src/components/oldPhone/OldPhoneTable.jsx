@@ -4,13 +4,12 @@
 import React from 'react';
 import { Table, Input, Popconfirm, Pagination, Menu, Dropdown, Button, Icon, Select } from 'antd';
 import {CCFetch} from '../../ccutil/ccfetch'
-import SearchForm from '../forms/SearchForm'
-import OrderOptPad from './OrderOptPad'
+import OldPhoneSearchForm from './component/OldPhoneSearchForm'
 import moment from 'moment'
-import EditOrderForm from './components/EditOrderForm'
+import EditOldPhoneForm from './component/EditOldPhoneForm'
 const Option = Select.Option;
 
-export default class OrdersList extends React.Component {
+export default class OldPhoneList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,14 +39,14 @@ export default class OrdersList extends React.Component {
         this.setState({ loading: true });
         let param = {};
         param.pageNum = 0;
-        CCFetch("/orders/list",param).then((res) => {
+        CCFetch("/oldPhone/list",param).then((res) => {
             this.setData(res,param)
         })
     };
     pageChange =(pageNumber)=> {
         let param = this.state.param;
         param.pageNum = pageNumber-1;
-        CCFetch("/orders/list", param).then((res) => {
+        CCFetch("/oldPhone/list", param).then((res) => {
             this.setData(res,param)
         })
     }
@@ -69,7 +68,7 @@ export default class OrdersList extends React.Component {
             dataIndex: 'id',
             width:70
         },{
-            title: '姓名',
+            title: '卖家姓名',
             dataIndex: 'userName',
             width:80
         },{
@@ -81,65 +80,67 @@ export default class OrdersList extends React.Component {
             dataIndex: 'type',
             width:120
         },{
-            title: '开始时间',
+            title: '颜色',
+            dataIndex: 'color',
+            width:80,
+            render:(text) =>{
+                return text ? text : '未记录'
+            }
+        },{
+            title: '内存',
+            dataIndex: 'ram',
+            width:80,
+            render:(text) =>{
+                return text ? text : '未记录'
+            }
+        },{
+            title: '回收时间',
             dataIndex: 'startTime',
             width:140,
             render:(text) =>{
                 return (moment(text).calendar())
             }
         }, {
-            title: '结束时间',
+            title: '剩余保修',
+            dataIndex: 'outTime',
+            width:80,
+            render:(text) =>{
+                return text ? (moment(text).fromNow()) : '未记录'
+            }
+        },{
+            title: '新鲜度',
             dataIndex: 'endTime',
             width:140,
             render:(text) =>{
                 return (moment(text).calendar())
             }
         },{
-            title: '开始原因',
-            dataIndex: 'startResource',
-            width:160
-        },{
-            title: '结束原因',
-            dataIndex: 'endResource',
-            width:160
-        },{
-            title: '报价',
+            title: '回收价',
             dataIndex: 'startPrice',
-            width:80
+            width:100
         },{
-            title: '成交价',
+            title: '零售价',
+            dataIndex: 'midPrice',
+            width:100
+        },{
+            title: '出售价',
             dataIndex: 'endPrice',
             width:80
         },{
-            title: '备注',
-            dataIndex: 'remark',
-            width:120
-        },{
-            title: '责任人',
-            dataIndex: 'repair',
+            title: '回收人',
+            dataIndex: 'assigner',
             width:100
         },{
             title: '状态',
             dataIndex: 'state',
             width:100,
-            render:(text) =>{
-                switch(text) {
-                    case -1 :
-                    return "待审核";
-                    case 0 :
-                    return "未完成";
-                    case 2 :
-                    return "已完成";
-                }
-            }
         },{
             title: '操作',
             width:200,
             fixed: 'right',
             render: (text,record) => {
                 return (
-                    // <OrderOptPad row={record} assigner={this.state.adminNames}/>
-                    <EditOrderForm assigner={this.state.adminNames} row={record} reloadTable={this.pageChange}/>
+                    <EditOldPhoneForm assigner={this.state.adminNames} row={record} reloadTable={this.pageChange}/>
                 );
             },
         }];
@@ -147,14 +148,14 @@ export default class OrdersList extends React.Component {
         return (
             <div className="gutter-example">
                 <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",borderRadius:" 10px"}}>
-                    <SearchForm setData={this.setData} data={this.state.adminNames}/>
+                    <OldPhoneSearchForm setData={this.setData} data={this.state.adminNames}/>
                 </div>
                 <Table
                     // bordered 
                     dataSource={this.state.data} 
                     pagination={false}
                     columns={columns} 
-                    scroll={{ x: 1550 }}
+                    scroll={{ x: 1690 }}
                 />
                 <Pagination showQuickJumper total={this.state.totalCount} onChange={this.pageChange} style={{marginTop:40,float:"right"}} />
             </div>

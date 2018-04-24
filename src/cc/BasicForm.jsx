@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Card, Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Button, Modal, message, notification} from 'antd';
+import { Card, Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Button, Modal, message, notification, Tabs} from 'antd';
 import {CCFetch} from "../ccutil/ccfetch";
+import OldPhoneDJ from './OldPhoneDJ'
 const FormItem = Form.Item;
+const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
 const allType = {
@@ -112,6 +114,7 @@ class UserYDJForm extends Component {
         this.setFirstContent();
     }
 
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
@@ -127,76 +130,85 @@ class UserYDJForm extends Component {
         return (
         <div className="gutter-example">
             <Row gutter={16}>
-                <Col className="gutter-row" md={24}>
+                <Col className="gutter-row" xs={24}>
                     <div className="gutter-box">
-                        <Card title="预登记" bordered={false}>
-                        <Col className="gutter-row" style={{marginTop:60}} xs={{ span: 16, offset: 2 }}>
-                            <Form onSubmit={this.handleSubmit}>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label={(
-                                        <span>
-                                            姓名
-                                        </span>
-                                    )}
-                                    hasFeedback
-                                >
-                                    {getFieldDecorator('userName', {
-                                        rules: [{ required: true, message: '请输入昵称!', whitespace: true }],
-                                    })(
-                                        <Input />
-                                    )}
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="电话号码"
-                                    hasFeedback
-                                >
-                                    {getFieldDecorator('cellphone', {
-                                        rules: [{ required: true, message: '请输入你的电话号码!' }],
-                                    })(
-                                        <Input />
-                                    )}
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="型号"
-                                    hasFeedback
-                                >
-                                    {getFieldDecorator('type', {
-                                        rules: [{ required: true, message: '请选择您的设备!' }],
-                                    })(
-                                        <Input onClick={this.firstType}/>
-                                    )}
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="故障原因"
-                                    hasFeedback
-                                >
-                                    {getFieldDecorator('startResource', {
-                                        rules: [{ required: true, message: '请输入你设备的故障!' }],
-                                    })(
-                                        <Input />
-                                    )}
-                                </FormItem>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="设备密码"
-                                    hasFeedback
-                                >
-                                    {getFieldDecorator('remark', {
-                                        rules: [{ required: true, message: '请输入你设备的密码!' }],
-                                    })(
-                                        <Input />
-                                    )}
-                                </FormItem>
-                                <FormItem >
-                                    <Button type="primary" style={{width:"30%",marginLeft:"25%"}} htmlType="submit" size="large">登记</Button>
-                                    <Button type="solid" style={{width:"30%"}} size="large" onClick={this.clearForm}>重置</Button>
-                                </FormItem>
-                            </Form>
+
+                        <Tabs>
+                            <TabPane tab="维修预登记" key="1">
+                                            
+                                <Col className="gutter-row" style={{marginTop:60}} xs={{ span: 16, offset: 1 }}>
+                                    <Form onSubmit={this.handleSubmit}>
+                                        <FormItem
+                                            {...formItemLayout}
+                                            label={(
+                                                <span>
+                                                    姓名
+                                                </span>
+                                            )}
+                                            hasFeedback
+                                        >
+                                            {getFieldDecorator('userName', {
+                                                rules: [{ required: true, message: '请输入昵称!', whitespace: true }],
+                                            })(
+                                                <Input />
+                                            )}
+                                        </FormItem>
+                                        <FormItem
+                                            {...formItemLayout}
+                                            label="电话号码"
+                                            hasFeedback
+                                        >
+                                            {getFieldDecorator('cellphone', {
+                                                rules: [{ required: true, message: '请输入你的电话号码!' }],
+                                            })(
+                                                <Input />
+                                            )}
+                                        </FormItem>
+                                        <FormItem
+                                            {...formItemLayout}
+                                            label="型号"
+                                            hasFeedback
+                                        >
+                                            {getFieldDecorator('type', {
+                                                rules: [{ required: true, message: '请选择您的设备!' }],
+                                            })(
+                                                <Input onClick={this.firstType}/>
+                                            )}
+                                        </FormItem>
+                                        <FormItem
+                                            {...formItemLayout}
+                                            label="故障原因"
+                                            hasFeedback
+                                        >
+                                            {getFieldDecorator('startResource', {
+                                                rules: [{ required: true, message: '请输入你设备的故障!' }],
+                                            })(
+                                                <Input />
+                                            )}
+                                        </FormItem>
+                                        <FormItem
+                                            {...formItemLayout}
+                                            label="设备密码"
+                                            hasFeedback
+                                        >
+                                            {getFieldDecorator('remark', {
+                                                rules: [{ required: true, message: '请输入你设备的密码!' }],
+                                            })(
+                                                <Input />
+                                            )}
+                                        </FormItem>
+                                        <FormItem >
+                                            <Button type="primary" style={{width:"30%",marginLeft:"33%"}} htmlType="submit" size="large">登记</Button>
+                                            <Button type="solid" style={{width:"30%"}} size="large" onClick={this.clearForm}>重置</Button>
+                                        </FormItem>
+                                    </Form>
                             </Col>
+                        </TabPane>
+                        <TabPane tab="二手机回收" key="2"><OldPhoneDJ/></TabPane>
+                    </Tabs>
+
+
+                        
 
                             <Modal 
                                 title={this.state.firstTitle}
@@ -208,8 +220,6 @@ class UserYDJForm extends Component {
                                     {this.state.firstContent}
                                 </div>
                             </Modal>
-
-                        </Card>
                     </div>
                 </Col>
             </Row>

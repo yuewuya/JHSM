@@ -62,14 +62,21 @@ export const menus = [
         key: '/app/cssModule', title: 'cssModule', icon: 'star',
     },
     {
-        key: '/app/cc/main', title: 'ccp1', icon: 'mobile',
+        key: '/app/cc/main', title: 'ccp1', icon: 'appstore',
     },
     {
-        key: '/app/tab1', title: 'ccp2', icon: 'copy',
+        key: '/app/order', title: 'ccp2', icon: 'copy',
         sub: [
-            { key: '/app/tab1/YDJTable', title: '预登记', icon: '', },
-            { key: '/app/tab1/table', title: '表格', icon: '', },
-            { key: '/app/tab1/chart', title: '图表', icon: '', },
+            { key: '/app/order/YDJList', title: '预登记', icon: '', },
+            { key: '/app/order/list', title: '表格', icon: '', },
+            { key: '/app/order/chart', title: '图表', icon: '', },
+        ],
+    },
+    {
+        key: '/app/oldPhone', title: 'ccp3', icon: 'mobile',
+        sub: [
+            { key: '/app/oldPhone/list', title: '预登记', icon: '', },
+            { key: '/app/oldPhone/chart', title: '图表', icon: '', },
         ],
     },
 ];
