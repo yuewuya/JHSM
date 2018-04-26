@@ -39,6 +39,7 @@ import OrderBook from '../components/ccp2/OrderBook'
 import OldPhoneINBook from '../components/oldPhone/OldPhoneINBook'
 import OldPhoneOUTBook from '../components/oldPhone/OldPhoneOUTBook'
 import AllBook from '../components/chart/AllBook'
+import AmountQXT from '../components/chart/AmountQXT'
 
 const WysiwygBundle = (props) => (
     <Bundle load={Wysiwyg}>
@@ -79,6 +80,7 @@ export default class CRouter extends Component {
                 <Route exact path="/app/employee/list" component={EmployeeList} />
 
                 <Route exact path="/app/chart/AllBook" component={AllBook} />
+                <Route exact path="/app/chart/AmountQXT" component={AmountQXT} />
 
                 <Route exact path="/app/form/basicForm" component={BasicForm} />
                 <Route exact path="/app/table/basicTable" component={BasicTable} />

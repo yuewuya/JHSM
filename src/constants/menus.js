@@ -1,21 +1,21 @@
 export const menus = [
     // { key: '/app/dashboard/index', title: '首页', icon: 'mobile', },
-    {
-        key: '/app/ui', title: 'UI', icon: 'scan',
-        sub: [
-            { key: '/app/ui/buttons', title: '按钮', icon: '', },
-            { key: '/app/ui/icons', title: '图标', icon: '', },
-            { key: '/app/ui/spins', title: '加载中', icon: '', },
-            { key: '/app/ui/modals', title: '对话框', icon: '', },
-            { key: '/app/ui/notifications', title: '通知提醒框', icon: '', },
-            { key: '/app/ui/tabs', title: '标签页', icon: '', },
-            { key: '/app/ui/banners', title: '轮播图', icon: '', },
-            { key: '/app/ui/wysiwyg', title: '富文本', icon: '', },
-            { key: '/app/ui/drags', title: '拖拽', icon: '', },
-            { key: '/app/ui/gallery', title: '画廊', icon: '', },
-            { key: '/app/ui/map', title: '地图'},
-        ],
-    },
+    // {
+    //     key: '/app/ui', title: 'UI', icon: 'scan',
+    //     sub: [
+    //         { key: '/app/ui/buttons', title: '按钮', icon: '', },
+    //         { key: '/app/ui/icons', title: '图标', icon: '', },
+    //         { key: '/app/ui/spins', title: '加载中', icon: '', },
+    //         { key: '/app/ui/modals', title: '对话框', icon: '', },
+    //         { key: '/app/ui/notifications', title: '通知提醒框', icon: '', },
+    //         { key: '/app/ui/tabs', title: '标签页', icon: '', },
+    //         { key: '/app/ui/banners', title: '轮播图', icon: '', },
+    //         { key: '/app/ui/wysiwyg', title: '富文本', icon: '', },
+    //         { key: '/app/ui/drags', title: '拖拽', icon: '', },
+    //         { key: '/app/ui/gallery', title: '画廊', icon: '', },
+    //         { key: '/app/ui/map', title: '地图'},
+    //     ],
+    // },
     // {
     //     key: '/app/animation', title: '动画', icon: 'rocket',
     //     sub: [
@@ -38,7 +38,7 @@ export const menus = [
     //     ],
     // },
     // {
-    //     key: '/app/chart', title: '图表', icon: 'area-chart',
+    //     key: '/app/chart1', title: '图表', icon: 'area-chart',
     //     sub: [
     //         { key: '/app/chart/echarts', title: 'echarts', icon: '', },
     //         { key: '/app/chart/recharts', title: 'recharts', icon: '', },
@@ -100,7 +100,7 @@ export const menus = [
         key: '/app/chart', title: 'ccp6', icon: 'area-chart',
         sub: [
             { key: '/app/chart/AllBook', title: '账本管理', icon: '', },
-            { key: '/app/chart/chart', title: '图表', icon: '', },
+            { key: '/app/chart/AmountQXT', title: '图表', icon: '', },
         ],
     },
 ];
