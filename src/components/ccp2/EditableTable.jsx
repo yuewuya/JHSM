@@ -4,8 +4,7 @@
 import React from 'react';
 import { Table, Input, Popconfirm, Pagination, Menu, Dropdown, Button, Icon, Select } from 'antd';
 import {CCFetch} from '../../ccutil/ccfetch'
-import SearchForm from '../forms/SearchForm'
-import OrderOptPad from './OrderOptPad'
+import SearchForm from './components/SearchForm'
 import moment from 'moment'
 import EditOrderForm from './components/EditOrderForm'
 const Option = Select.Option;
@@ -138,7 +137,6 @@ export default class OrdersList extends React.Component {
             fixed: 'right',
             render: (text,record) => {
                 return (
-                    // <OrderOptPad row={record} assigner={this.state.adminNames}/>
                     <EditOrderForm assigner={this.state.adminNames} row={record} reloadTable={this.pageChange}/>
                 );
             },

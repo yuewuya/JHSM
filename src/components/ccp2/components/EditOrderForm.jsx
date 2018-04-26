@@ -1,6 +1,3 @@
-/**
- * Created by hao.cheng on 2017/4/15.
- */
 import React, { Component } from 'react';
 import { Button, Modal, Form, Input, Radio, DatePicker, InputNumber, Select, Divider, message,Popconfirm  } from 'antd';
 import moment from 'moment'
@@ -185,6 +182,9 @@ class EditOrderForm extends Component {
         return (
             <div>
                 <a onClick={this.showModal}>编辑</a>
+
+                <Divider type="vertical" />
+                <a onClick={this.createPrintArea}>打印</a>
                 
                 {this.props.row.state != 2 ? (<Divider type="vertical" />) : ''}
                 {this.props.row.state != 2 ? (
@@ -193,8 +193,7 @@ class EditOrderForm extends Component {
                     </Popconfirm>
                     ) : ''}
                 
-                <Divider type="vertical" />
-                <a onClick={this.createPrintArea}>打印</a>
+                
                 
                 {admin.role >= 99 ? <Divider type="vertical" /> : ''}
                 {admin.role >= 99 ? <Popconfirm title="确定删除？" okText="删除" cancelText="取消" onConfirm={this.deleteOrder}>

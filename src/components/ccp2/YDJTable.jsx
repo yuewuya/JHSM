@@ -4,7 +4,6 @@
 import React from 'react';
 import { Table, Input, Popconfirm, Pagination, Menu, Dropdown, Button, Icon, Select } from 'antd';
 import {CCFetch} from '../../ccutil/ccfetch'
-import SearchForm from '../forms/SearchForm'
 import OrderSHForm from './components/OrderSHForm'
 import moment from 'moment'
 const Option = Select.Option;
@@ -90,11 +89,10 @@ export default class YDJTable extends React.Component {
     render() {
         return (
             <div className="gutter-example">
-                <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",borderRadius:" 10px"}}>
-                    <SearchForm setData={this.setData} data={this.state.adminNames}/>
+                <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",borderRadius:" 10px",overflow:"hidden"}}>
+                <Button style={{float:"right"}} onClick={this.start} type="primary" className="login-form-button">刷新</Button>
                 </div>
                 <Table
-                    // bordered 
                     dataSource={this.state.data} 
                     pagination={false}
                     columns={this.columns} 
