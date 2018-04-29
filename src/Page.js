@@ -7,6 +7,7 @@ import CCLogin from './cc/CCLogin'
 import UserYDJ from './cc/BasicForm'
 import SearchQRCode from './cc/SearchQRCode'
 import PrintPage from './cc/PrintPage'
+import EditQRCode from './cc/EditQRCode'
 
 export default () => (
     <Router>
@@ -18,6 +19,7 @@ export default () => (
             <Route path="/cclogin" component={CCLogin} />
             <Route path="/UserYDJ" component={UserYDJ} />
             <Route path="/SearchQRCode/:id" component={SearchQRCode} />
+            <Route path="/EditQRCode/:id" component={EditQRCode} />
             <Route path='/PrintPage/:id' component={PrintPage} />
             <Route component={NotFound} />
         </Switch>

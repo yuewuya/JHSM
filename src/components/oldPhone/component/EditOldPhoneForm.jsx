@@ -18,7 +18,7 @@ const formItemLayout = {
     },
 };
 
-const admin = JSON.parse(localStorage.getItem("admin"))[0];
+const admin = JSON.parse(localStorage.getItem("admin")) ? JSON.parse(localStorage.getItem("admin"))[0] : {role : 0};
 
 const SellForm = Form.create()(
     (props) => {

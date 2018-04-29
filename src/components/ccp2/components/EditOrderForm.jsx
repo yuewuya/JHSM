@@ -15,7 +15,8 @@ const formItemLayout = {
     },
 };
 
-const admin = JSON.parse(localStorage.getItem("admin"))[0];
+
+const admin = JSON.parse(localStorage.getItem("admin")) ? JSON.parse(localStorage.getItem("admin"))[0] : {role : 0};
 
 const CollectionCreateForm = Form.create()(
     (props) => {
@@ -131,7 +132,7 @@ class EditOrderForm extends Component {
             param.startPrice = values.endPrice;
             param.endResource = values.endResource;
             param.repair = values.repair;
-            CCFetch("/orders/approval", param).then((res) => {
+            CCFetch("/orders/edit", param).then((res) => {
                 if(res.code == 1){
                     this.props.reloadTable(1);
                     message.success("修改成功")

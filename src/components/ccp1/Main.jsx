@@ -16,7 +16,6 @@ export default class Main extends React.Component {
     constructor(props){
         super(props)
         this.state={
-            dddata : [],
             messageList : [],
             maxMSGId :0,
             websocket : null,
@@ -25,7 +24,6 @@ export default class Main extends React.Component {
     }
 
     componentDidMount(){
-        this.dddata();
         this.startMessage();
         this.ljwebSocket()
     }
@@ -60,14 +58,6 @@ export default class Main extends React.Component {
         this.setState({
             msgList : a,
             messageList : this.setmsglist(a)
-        })
-    }
-
-    dddata =()=>{
-        CCFetch("/orders/50day").then((res) => {
-            this.setState({
-                dddata : res.data
-            })
         })
     }
 
@@ -139,7 +129,6 @@ export default class Main extends React.Component {
                             <Col className="gutter-row" md={24}>
                                 <div className="gutter-box">
                                     <Card bordered={false} className={'no-padding'}>
-                                        {/* <EchartsProjects dddata = {this.state.dddata}/> */}
                                         <Tabs
                                             defaultActiveKey="1"
                                             tabPosition="left"
