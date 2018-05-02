@@ -47,6 +47,9 @@ export default class EditQRCode extends Component{
                 message.success("成功添加！");
                 let b = this.state.data;
                 b.unshift(<Timeline.Item color="green">{"刚刚 " + a}</Timeline.Item>)
+                this.setState({
+                    data : b
+                })
             }else{
                 message.error("添加失败，请重试或联系CC")
             }

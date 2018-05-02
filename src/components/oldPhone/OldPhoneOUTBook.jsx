@@ -83,7 +83,7 @@ export default class OldPhoneOUTBook extends React.Component {
 
         return (
             <div className="gutter-example">
-                <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",borderRadius:" 10px"}}>
+                <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",borderRadius:" 10px",overflow:"hidden"}}>
                     <BookForm setData={this.setData} type="二手出售"/>
                 </div>
                 <Table

@@ -45,6 +45,12 @@ export default class EmployeeList extends Component {
         })
     }
 
+    addEMP=(child)=>{
+        this.setState({
+            data:child
+        })
+    }
+
     deleteEMP =(id)=>{
         
         let param = {};

@@ -129,7 +129,7 @@ class EditOrderForm extends Component {
             param.type = values.type;
             param.startResource = values.startResource;
             param.endTime = values.endTime;
-            param.startPrice = values.endPrice;
+            param.endPrice = values.endPrice;
             param.endResource = values.endResource;
             param.repair = values.repair;
             CCFetch("/orders/edit", param).then((res) => {

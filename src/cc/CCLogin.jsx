@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LoginForm from '../components/forms/LoginForm'
+import LoginForm from './component/LoginForm'
 
 export default class CCLogin extends Component {
     constructor(props) {

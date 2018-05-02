@@ -80,25 +80,32 @@ export default class OrdersList extends React.Component {
             dataIndex: 'type',
             width:120
         },{
-            title: '开始时间',
+            title: '送修时间',
             dataIndex: 'startTime',
             width:140,
             render:(text) =>{
                 return (moment(text).calendar())
             }
         }, {
-            title: '结束时间',
+            title: '承诺时间',
             dataIndex: 'endTime',
-            width:140,
-            render:(text) =>{
-                return (moment(text).calendar())
+            width:145,
+            render:(text,record) =>{
+                if(record.state == 2){
+                    return "按时完成";
+                }else if(moment(text) < moment()){
+                    return (<span style={{color:"red"}}>已超时，快处理</span>)
+                }else{
+                    return (<span style={{color:"green"}}>{moment(text).fromNow()}</span>)
+                }
+                
             }
         },{
-            title: '开始原因',
+            title: '故障描述',
             dataIndex: 'startResource',
             width:160
         },{
-            title: '结束原因',
+            title: '售后保障',
             dataIndex: 'endResource',
             width:160
         },{
@@ -110,7 +117,7 @@ export default class OrdersList extends React.Component {
             dataIndex: 'endPrice',
             width:80
         },{
-            title: '备注',
+            title: '设备密码',
             dataIndex: 'remark',
             width:120
         },{
@@ -144,7 +151,7 @@ export default class OrdersList extends React.Component {
 
         return (
             <div className="gutter-example">
-                <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",borderRadius:" 10px"}}>
+                <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",borderRadius:" 10px",overflow:"hidden"}}>
                     <SearchForm setData={this.setData} data={this.state.adminNames}/>
                 </div>
                 <Table
@@ -152,7 +159,7 @@ export default class OrdersList extends React.Component {
                     dataSource={this.state.data} 
                     pagination={false}
                     columns={columns} 
-                    scroll={{ x: 1550 }}
+                    scroll={{ x: 1555 }}
                 />
                 <Pagination showQuickJumper total={this.state.totalCount} onChange={this.pageChange} style={{marginTop:40,float:"right"}} />
             </div>

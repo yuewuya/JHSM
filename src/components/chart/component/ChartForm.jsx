@@ -7,16 +7,21 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 
-class BookForm extends React.Component{
+class ChartForm extends React.Component{
 
     handleSubmit =(e)=> {
         e.preventDefault();
         var that = this;
         this.props.form.validateFields((err, values) => {
             if(!err){
-                values.type = this.props.type;
-                CCFetch('/books/orderList',values).then((res) => {
-                    that.props.setData(res,values)
+                CCFetch('/books/searchChart',values).then((res) => {
+                    that.props.changeDate(res.data, res.count)
+                })
+                CCFetch('/books/bfb',values).then(res => {
+                    that.props.setBFB(res.data)
+                })
+                CCFetch('/books/bfbout',values).then(res => {
+                    this.props.setBFBOUT(res.data,res.count)
                 })
             }
         })
@@ -29,6 +34,7 @@ class BookForm extends React.Component{
     render(){
         const {getFieldDecorator} = this.props.form;
         return (
+            <div style={{width:"100%",background:" #021f1b0d",padding: "20px 30px",margin: "20px 0",overflow:"hidden"}}>
             <Form onSubmit={this.handleSubmit} layout="inline">
                 <FormItem>
                     {getFieldDecorator('startTime')
@@ -44,8 +50,9 @@ class BookForm extends React.Component{
                     </Button>
                 </div>
             </Form>
+            </div>
         )
     }
 }
 
-export default Form.create()(BookForm)
+export default Form.create()(ChartForm)

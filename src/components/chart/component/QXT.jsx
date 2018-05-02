@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {Col} from 'antd'
 import {CCFetch} from '../../../ccutil/ccfetch'
-
-// const data = [
-//     {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-//     {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-//     {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-//     {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-//     {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-//     {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-//     {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-// ];
+import ChartForm from './ChartForm'
+import BinTu from './BinTu'
+import BinTuOUT from './BinTuOUT'
 
 export default class QXT extends Component {
     constructor(props){
         super(props);
         this.state={
-            amountData:[]
+            amountData:[],
+            count:0,
+            bfbData:[],
+            bfbOUT:[],
+            outCount:0
         }
     }
     componentDidMount(){
@@ -24,29 +22,82 @@ export default class QXT extends Component {
     }
 
     start =()=>{
-        CCFetch('/books/7day').then(res => {
+        let param = {id : 1};
+        CCFetch('/books/searchChart',param).then(res => {
             this.setState({
-                amountData : res.data
+                amountData : res.data,
+                count : res.count
             })
+        })
+        CCFetch('/books/bfb',param).then(res => {
+            this.setState({
+                bfbData : res.data
+            })
+        })
+        CCFetch('/books/bfbout',param).then(res => {
+            this.setState({
+                bfbOUT : res.data,
+                outCount : res.count
+            })
+        })
+    }
+
+    changeDate=(a,b)=>{
+        this.setState({
+            amountData : a,
+            count: b,
+        })
+    }
+
+    setBFB=(a)=>{
+        this.setState({
+            bfbData : a
+        })
+    }
+
+    setBFBOUT=(a,b)=>{
+        this.setState({
+            bfbOUT: a,
+            outCount : b
         })
     }
     render(){
         return (
-            <ResponsiveContainer width="100%" height={300}>
-                <LineChart
-                    data={this.state.amountData}
-                    margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                >
+            <div>
+                <ChartForm changeDate={this.changeDate} setBFB={this.setBFB} setBFBOUT={this.setBFBOUT}/>
 
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="维修" stroke="#8884d8" activeDot={{r: 8}} />
-                    <Line type="monotone" dataKey="二手" stroke="#82ca9d" />
-                </LineChart>
-            </ResponsiveContainer>
+                <div>
+                    <Col className="gutter-row" md={12} style={{textAlign:"center"}}>
+                        <BinTu data={this.state.bfbData}/>
+                        总额：￥{this.state.count}
+                    </Col>
+                    <Col className="gutter-row" md={12} style={{textAlign:"center"}}>
+                        <BinTuOUT data={this.state.bfbOUT}/>
+                        总额：￥{this.state.outCount}
+                    </Col>
+                </div>
+
+                <h3 style={{marginLeft:30,marginBottom:10}}>利润图：</h3>
+                <h4 style={{marginLeft:50,marginBottom:20}}>该阶段总利润为：￥{this.state.count}</h4>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart
+                        data={this.state.amountData}
+                        margin={{top: 5, right: 30, left: 20, bottom: 5}}
+                    >
+
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="维修" stroke="#8884d8" activeDot={{r: 8}} />
+                        <Line type="monotone" dataKey="二手" stroke="#82ca9d" />
+                        <Line type="monotone" dataKey="零售" stroke="red" />
+                    </LineChart>
+                </ResponsiveContainer>
+                
+            
+            </div>
         )
     }
     

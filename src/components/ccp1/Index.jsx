@@ -6,13 +6,13 @@ import EchartsProjects from './EchartsProjects';
 import b1 from '../../style/imgs/b1.jpg';
 import {CCFetch} from "../../ccutil/ccfetch";
 import moment from 'moment';
-import EchartsForce from '../charts/EchartsForce';
+import EchartsForce from './component/EchartsForce';
 import Draggable from 'react-draggable';
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
 
 
-export default class Main extends React.Component {
+export default class Index extends React.Component {
     constructor(props){
         super(props)
         this.state={
@@ -26,10 +26,6 @@ export default class Main extends React.Component {
     componentDidMount(){
         this.startMessage();
         this.ljwebSocket()
-    }
-
-    componentWillUnmount(){
-        this.state.websocket.close()
     }
 
     ljwebSocket =()=>{

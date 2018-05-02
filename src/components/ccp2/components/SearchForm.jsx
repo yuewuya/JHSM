@@ -53,7 +53,7 @@ class SearchForm extends React.Component{
                     }
                 </FormItem>
                 <FormItem>
-                    {getFieldDecorator('orderType')
+                    {getFieldDecorator('type')
                         (<Select style={{width:200}} placeholder="订单类型">
                             <Option value="普通订单">普通订单</Option>
                             <Option value="简易订单">简易订单</Option>
