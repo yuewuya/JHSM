@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
-import { Card, Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Button, Modal, message, notification, InputNumber} from 'antd';
+import { Form, Input, Select, Row, Col, Button, Modal, message, notification, InputNumber} from 'antd';
 import {CCFetch} from "../ccutil/ccfetch";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-const allType = {
-    "苹果" : {
-        "手机" : ["iphoneX","iphone8","iphone7","iphone6",],
-        "平板" : ["air2","air3","air4","air5",],
-        "电脑" : ["mac1","mac2","mac3","mac4",],
-        "配件" : ["cc1","cc2","cc3","cc4",]
-    },
-    "华为" : {
-        "手机" : ["P20","P10","P9","mate10",],
-        "平板" : ["荣耀20","荣耀10","荣耀9","荣耀8",]
-    },
-}
+let allType = {}
 
 class OldPhoneForm extends Component {
     state = {
@@ -79,16 +68,19 @@ class OldPhoneForm extends Component {
     }
 
     setFirstContent =()=>{
-        const child = [];
-        for(let i in allType){
-            child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setFirstText(i)}>{i}</Button>)
-        }
-        this.setState({
-            firstContent : child
+        CCFetch("/allType/list").then(res=>{
+            allType = res;
+            const child = [];
+            for(let i in allType){
+                child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setFirstText(i)}>{i}</Button>)
+            }
+            this.setState({
+                firstContent : child
+            })
         })
     }
     setFirstText =(text)=>{
-        const a =eval('allType.' + text);
+        const a =eval('allType["' + text + '"]');
         const child = [];
         for(let i in a){
             child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setSecondText(i)}>{i}</Button>)
@@ -101,7 +93,7 @@ class OldPhoneForm extends Component {
     }
 
     setSecondText =(text)=>{
-        let a = eval('allType.' + this.state.firstText + '.' + text)
+        let a = eval('allType["' + this.state.firstText + '"]["' + text + '"]')
         const child = [];
         for(let i in a){
             child.push(<Button onClick={()=>this.setTypeValue(a[i])} style={{marginBottom:20, marginLeft:10}}>{a[i]}</Button>)
@@ -204,6 +196,7 @@ class OldPhoneForm extends Component {
                                 <FormItem >
                                     <Button type="primary" style={{width:"30%",marginLeft:"33%"}} htmlType="submit" size="large">登记</Button>
                                     <Button type="solid" style={{width:"30%"}} size="large" onClick={this.clearForm}>重置</Button>
+                                    <Button type="dashed" onClick={this.setFirstContent}  size="large"  style={{width:"62%", marginLeft:"33%", marginTop:20}}>刷新机型</Button>
                                 </FormItem>
                             </Form>
                             </Col>

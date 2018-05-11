@@ -62,7 +62,7 @@ class NormalLoginForm extends Component {
             },
         };
         return (
-            <div>
+            <div style={{float:'left'}}>
             <Button type="primary" onClick={this.add}>添加员工</Button>
             <Modal
                 visible={this.state.visible}

@@ -45,10 +45,11 @@ export default class EmployeeList extends Component {
         })
     }
 
-    addEMP=(child)=>{
+    addEMP=()=>{
         this.setState({
-            data:child
-        })
+            data:[]
+        });
+        this.loadAllAdmin();
     }
 
     deleteEMP =(id)=>{
@@ -67,12 +68,17 @@ export default class EmployeeList extends Component {
 
 
     render(){
-        const data = this.state.data;
         return (
             <div style={{marginTop:20}} className="gutter-example button-demo">
-                <AddForm refresh={this.loadAllAdmin}/>
+                <div style={{overflow:'hidden'}}>
+                    <AddForm refresh={this.addEMP}/>
+                    <Button onClick={this.addEMP} style={{float:'left',marginLeft:10}}>刷新</Button>
+                </div>
                 <br/>  
-                {this.state.data}
+                <div>
+                    {this.state.data}
+                </div>
+                
             </div>
         )
     }

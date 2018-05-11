@@ -2,7 +2,7 @@
  * CC
  */
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox, message, Select,InputNumber } from 'antd';
+import { Form, Icon, Input, Button, message, Select,InputNumber } from 'antd';
 import {Redirect } from 'react-router-dom';
 import {CCFetch} from '../../ccutil/ccfetch'
 import moment from 'moment'

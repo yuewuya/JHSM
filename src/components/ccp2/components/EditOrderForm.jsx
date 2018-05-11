@@ -176,7 +176,11 @@ class EditOrderForm extends Component {
     }
 
     createPrintArea =()=>{
-        window.open("http://localhost:3006/#/printPage/"+this.props.row.id);
+        window.open("http://47.104.184.151/jh/#/printPage/"+this.props.row.id);
+    }
+
+    timeLine =()=>{
+        window.open("http://47.104.184.151/jh/#/editqrcode/"+this.props.row.id);
     }
 
     render() {
@@ -186,6 +190,9 @@ class EditOrderForm extends Component {
 
                 <Divider type="vertical" />
                 <a onClick={this.createPrintArea}>打印</a>
+
+                <Divider type="vertical" />
+                <a onClick={this.timeLine}>流程</a>
                 
                 {this.props.row.state != 2 ? (<Divider type="vertical" />) : ''}
                 {this.props.row.state != 2 ? (

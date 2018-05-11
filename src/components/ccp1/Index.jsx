@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card, Timeline, Icon, Input, Button, message, Tabs} from 'antd';
+import { Row, Col, Card, Icon, Input, Button, message, Tabs, Table, Tag} from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import EchartsViews from './EchartsViews';
 import EchartsProjects from './EchartsProjects';
@@ -8,6 +8,8 @@ import {CCFetch} from "../../ccutil/ccfetch";
 import moment from 'moment';
 import EchartsForce from './component/EchartsForce';
 import Draggable from 'react-draggable';
+import AddType from './component/AddType';
+import Tags from './component/Tags'
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
 
@@ -19,18 +21,28 @@ export default class Index extends React.Component {
             messageList : [],
             maxMSGId :0,
             websocket : null,
-            msgList : []
+            msgList : [],
+            data : []
         }
     }
 
     componentDidMount(){
         this.startMessage();
-        this.ljwebSocket()
+        this.ljwebSocket();
+        this.getAllTypeData()
+    }
+
+    getAllTypeData =()=>{
+        CCFetch("/allType/main").then(res =>{
+            this.setState({
+                data : res.data
+            })
+        })
     }
 
     ljwebSocket =()=>{
         let that = this;
-        let websocket = new WebSocket('ws://localhost:8080/MSGWebSocket');
+        let websocket = new WebSocket('ws://47.104.184.151:8080/MSGWebSocket');
         this.setState({
             websocket : websocket
         });
@@ -114,6 +126,22 @@ export default class Index extends React.Component {
     }
 
     render() {
+        const columns = [{
+            title: '品牌',
+            dataIndex: 'pp',
+            width:100
+        },{
+            title: '种类',
+            dataIndex: 'zl',
+            width:70
+        },{
+            title: '型号',
+            dataIndex: 'xh',
+            width:870,
+            render:(text,record)=>{
+                return (<Tags text={text} row={record} />)
+            }
+        }];
         const dragHandlers = {onStart: this.onStart, onStop: this.onStop};
         return (
             <div className="gutter-example button-demo">
@@ -130,15 +158,18 @@ export default class Index extends React.Component {
                                             tabPosition="left"
                                             style={{height: 212}}
                                         >
-                                            <TabPane tab="Tab 1" key="1">Content of tab 1</TabPane>
-                                            <TabPane tab="Tab 2" key="2">Content of tab 2</TabPane>
-                                            <TabPane tab="Tab 3" key="3">Content of tab 3</TabPane>
-                                            <TabPane tab="Tab 4" key="4">Content of tab 4</TabPane>
-                                            <TabPane tab="Tab 5" key="5">Content of tab 5</TabPane>
-                                            <TabPane tab="Tab 6" key="6">Content of tab 6</TabPane>
-                                            <TabPane tab="Tab 7" key="7">Content of tab 7</TabPane>
-                                            <TabPane tab="Tab 8" key="8">Content of tab 8</TabPane>
-                                            <TabPane tab="Tab 9" key="9">Content of tab 9</TabPane>
+                                            <TabPane tab="新增机型" key="1">
+                                                <AddType refresh={this.getAllTypeData}/>
+                                            </TabPane>
+                                            <TabPane tab="其他页面" key="2">
+                                                <div style={{marginTop:50}}>
+                                                    <Button onClick={()=>window.open("http://47.104.184.151/jh/#/userydj")} type="primary">用户登记页面</Button>
+                                                    <Button onClick={()=>window.open("http://47.104.184.151/jh/#/editqrcode/118")} type="primary">增加流程页面</Button>
+                                                    <Button onClick={()=>window.open("http://47.104.184.151/jh/#/printPage/118")} type="primary">数据打印页面</Button>
+                                                </div>
+                                                
+                                            </TabPane>
+                                            <TabPane tab="构思中" key="3">不知道该搞些什么</TabPane>
                                         </Tabs>
                                     </Card>
                                 </div>
@@ -146,46 +177,28 @@ export default class Index extends React.Component {
 
                             <Col className="gutter-row" md={24}>
                         <div className="gutter-box">
-                            <Card title="TAB页" bordered={false}>
+                            <Card title="一些信息" bordered={false}>
+
+                                
+
                                 <Tabs defaultActiveKey="1" style={{height: 430}}>
-                                    <TabPane tab={<span><Icon type="apple" />Tab 1</span>} key="1">
+
+                                    <TabPane tab={<span><Icon type="android" />常用机型</span>} key="1">
+                                        <div style={{}} >
+                                        <Table
+                                            dataSource={this.state.data} 
+                                            pagination={false}
+                                            columns={columns} 
+                                            scroll={{ x:1000,y: 320 }}
+                                        />
+                                        </div>    
+                                    </TabPane>
+
+                                    <TabPane tab={<span><Icon type="apple" />关系图</span>} key="2">
                                             <EchartsForce/>
                                     </TabPane>
-                                    <TabPane tab={<span><Icon type="android" />Tab 2</span>} key="2">
-                                        <div>
-                                        <Col className="gutter-row" md={6}>
-                                            <div className="gutter-box">
-                                                <Draggable zIndex={100} {...dragHandlers}>
-                                                    <Card bordered={false} className={'dragDemo'}>
-                    
-                                                        I can be dragged anywhere
-                                                    </Card>
-                                                </Draggable>
-                                            </div>
-                                        </Col>
-                                        <Col className="gutter-row" md={6}>
-                                        <div className="gutter-box">
-                                            <Draggable zIndex={100} {...dragHandlers}>
-                                                <Card bordered={false} className={'dragDemo'}>
-                
-                                                    I can be dragged anywhere
-                                                </Card>
-                                            </Draggable>
-                                        </div>
-                                    </Col>
-                                    <Col className="gutter-row" md={6}>
-                                        <div className="gutter-box">
-                                            <Draggable zIndex={100} {...dragHandlers}>
-                                                <Card bordered={false} className={'dragDemo'}>
-                    
-                                                    I can be dragged anywhere
-                                                </Card>
-                                            </Draggable>
-                                        </div>
-                                    </Col>
-                                </div>    
-                                </TabPane>
-                            </Tabs>
+                                    
+                                </Tabs>
                         </Card>
                     </div>
                 </Col>

@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Row, Col, Card, Timeline, Icon, Select, InputNumber , Button, Form, Input, message} from 'antd';
+import { Row, Col, Card, Timeline, Icon, Select , Button, Form, Input, message} from 'antd';
 import {CCFetch} from "../ccutil/ccfetch";
 import moment from 'moment'
 import EditForm from './component/EditForm'
@@ -27,7 +27,7 @@ export default class EditQRCode extends Component{
             let child = [];
             for(let i in res.data){
                 child.push(
-                    <Timeline.Item color="green">{moment(res.data[i].dateTime).format("YYYY-MM-DD HH:mm:ss") + " " + res.data[i].msg}</Timeline.Item>
+                    <Timeline.Item color="green">{moment(res.data[i].createTime).format("YYYY-MM-DD HH:mm:ss") + " " + res.data[i].msg}</Timeline.Item>
                 )
             }
             this.setState({
@@ -38,22 +38,28 @@ export default class EditQRCode extends Component{
 
     addTimeLine =()=>{
         let a = document.getElementById("addTimeLine").value;
-        let param = {
-            orderId : this.state.id,
-            msg : a
-        }
-        CCFetch("/orderLine/add",param).then(res=>{
-            if(res.code == 1){
-                message.success("成功添加！");
-                let b = this.state.data;
-                b.unshift(<Timeline.Item color="green">{"刚刚 " + a}</Timeline.Item>)
-                this.setState({
-                    data : b
-                })
-            }else{
-                message.error("添加失败，请重试或联系CC")
+        if(a && a!=""){
+            let param = {
+                orderId : this.state.id,
+                msg : a
             }
-        })
+            CCFetch("/orderLine/add",param).then(res=>{
+                if(res.code == 1){
+                    message.success("成功添加！");
+                    let b = this.state.data;
+                    b.unshift(<Timeline.Item color="green">{"刚刚 " + a}</Timeline.Item>)
+                    this.setState({
+                        data : b
+                    });
+                    document.getElementById("addTimeLine").value = "";
+                }else{
+                    message.error("添加失败，请重试或联系CC")
+                }
+            })
+        }else{
+            message.warn("请先填入流程信息")
+        }
+        
     }
 
     render(){

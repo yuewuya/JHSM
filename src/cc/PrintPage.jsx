@@ -1,5 +1,4 @@
 import React from 'react';
-import { Modal, Input, Popconfirm, Pagination, Menu, Dropdown, Button, Icon, Divider } from 'antd';
 import QRCode from 'qrcode.react'
 import PrintProvider,{Print,NOPRINT} from 'react-easy-print'
 import {CCFetch} from '../ccutil/ccfetch'
@@ -18,11 +17,6 @@ export default class PrintPage extends React.Component{
 
     componentDidMount(){
         this.start();
-        this.printme()
-    }
-
-    printme =()=>{
-        window.print();
     }
 
     start =()=>{
@@ -32,18 +26,19 @@ export default class PrintPage extends React.Component{
         CCFetch("/orders/findById",param).then(res =>{
             this.setState({
                 order : res.data[0]
-            })
+            });
+            window.print();
         })
 
     }
 
     render(){
         const order = this.state.order;
-        const url = "http://localhost:3006/#/searchqrcode/" + this.state.id
-        const editUrl = "http://localhost:3006/#/editqrcode/" + this.state.id
+        const url = "http://47.104.184.151/jh/#/searchqrcode/" + this.state.id
+        const editUrl = "http://47.104.184.151/jh/#/editqrcode/" + this.state.id
         return (
-            <div style={{width:200}}>
-                <h2 style={{marginBottom:20,marginTop:40,textAlign:'center',borderBottom:"1px dashed black",paddingBottom:20}}>
+            <div style={{width:200, marginLeft:20}}>
+                <h2 style={{marginBottom:20,marginTop:0,textAlign:'center',borderBottom:"1px dashed black",paddingBottom:20}}>
                     存单
                 </h2>
                 <h4 style={{paddingLeft:20}}>姓名:{order.userName}</h4>
@@ -60,7 +55,7 @@ export default class PrintPage extends React.Component{
                     />
                 </h3>
 
-                <h2 style={{marginBottom:20,marginTop:40,textAlign:'center',borderBottom:"1px dashed black",paddingBottom:20}}>
+                <h2 style={{marginBottom:20,marginTop:20,textAlign:'center',borderBottom:"1px dashed black",paddingBottom:20}}>
                     回执单
                 </h2>
                 <h4 style={{paddingLeft:20}}>客户姓名:{order.userName}</h4>
@@ -71,7 +66,7 @@ export default class PrintPage extends React.Component{
                 <h4 style={{paddingLeft:20}}>售后qq:634636488</h4>
 
                 <h3 style={{marginBottom:20,marginTop:20,textAlign:'center',borderBottom:"1px dashed black",paddingBottom:20}}>
-                    扫码查看看详情
+                    扫码查看详情
                     <QRCode 
                         style={{marginTop:20}}
                         value={url}

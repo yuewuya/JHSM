@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Button, Modal, message, notification, Tabs} from 'antd';
+import { Form, Input, Row, Col, Button, Modal, message, notification, Tabs} from 'antd';
 import {CCFetch} from "../ccutil/ccfetch";
 import OldPhoneDJ from './OldPhoneDJ'
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
-const Option = Select.Option;
 
-const allType = {
-    "苹果" : {
-        "手机" : ["iphoneX","iphone8","iphone7","iphone6",],
-        "平板" : ["air2","air3","air4","air5",],
-        "电脑" : ["mac1","mac2","mac3","mac4",],
-        "配件" : ["cc1","cc2","cc3","cc4",]
-    },
-    "华为" : {
-        "手机" : ["P20","P10","P9","mate10",],
-        "平板" : ["荣耀20","荣耀10","荣耀9","荣耀8",]
-    },
-}
+let allType = {}
 
 class UserYDJForm extends Component {
     state = {
@@ -67,16 +55,20 @@ class UserYDJForm extends Component {
     }
 
     setFirstContent =()=>{
-        const child = [];
-        for(let i in allType){
-            child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setFirstText(i)}>{i}</Button>)
-        }
-        this.setState({
-            firstContent : child
+
+        CCFetch("/allType/list").then(res=>{
+            allType = res;
+            const child = [];
+            for(let i in allType){
+                child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setFirstText(i)}>{i}</Button>)
+            }
+            this.setState({
+                firstContent : child
+            })
         })
     }
     setFirstText =(text)=>{
-        const a =eval('allType.' + text);
+        const a =eval('allType["' + text + '"]');
         const child = [];
         for(let i in a){
             child.push(<Button style={{marginBottom:20, marginLeft:10}} onClick={()=>this.setSecondText(i)}>{i}</Button>)
@@ -89,7 +81,7 @@ class UserYDJForm extends Component {
     }
 
     setSecondText =(text)=>{
-        let a = eval('allType.' + this.state.firstText + '.' + text)
+        let a = eval('allType["' + this.state.firstText + '"]["' + text + '"]')
         const child = [];
         for(let i in a){
             child.push(<Button onClick={()=>this.setTypeValue(a[i])} style={{marginBottom:20, marginLeft:10}}>{a[i]}</Button>)
@@ -137,6 +129,7 @@ class UserYDJForm extends Component {
                             <TabPane tab="维修预登记" key="1">
                                             
                                 <Col className="gutter-row" style={{marginTop:60}} xs={{ span: 16, offset: 1 }}>
+                                    
                                     <Form onSubmit={this.handleSubmit}>
                                         <FormItem
                                             {...formItemLayout}
@@ -169,9 +162,12 @@ class UserYDJForm extends Component {
                                             label="型号"
                                             hasFeedback
                                         >
-                                            {getFieldDecorator('type', {
+                                            {/* {getFieldDecorator('type', {
                                                 rules: [{ required: true, message: '请选择您的设备!' }],
                                             })(
+                                                <Input onClick={this.firstType}/>
+                                            )} */}
+                                            {getFieldDecorator('type')(
                                                 <Input onClick={this.firstType}/>
                                             )}
                                         </FormItem>
@@ -180,9 +176,12 @@ class UserYDJForm extends Component {
                                             label="故障原因"
                                             hasFeedback
                                         >
-                                            {getFieldDecorator('startResource', {
+                                            {/* {getFieldDecorator('startResource', {
                                                 rules: [{ required: true, message: '请输入你设备的故障!' }],
                                             })(
+                                                <Input />
+                                            )} */}
+                                            {getFieldDecorator('startResource')(
                                                 <Input />
                                             )}
                                         </FormItem>
@@ -191,15 +190,19 @@ class UserYDJForm extends Component {
                                             label="设备密码"
                                             hasFeedback
                                         >
-                                            {getFieldDecorator('remark', {
+                                            {/* {getFieldDecorator('remark', {
                                                 rules: [{ required: true, message: '请输入你设备的密码!' }],
                                             })(
+                                                <Input />
+                                            )} */}
+                                            {getFieldDecorator('remark')(
                                                 <Input />
                                             )}
                                         </FormItem>
                                         <FormItem >
-                                            <Button type="primary" style={{width:"30%",marginLeft:"33%"}} htmlType="submit" size="large">登记</Button>
+                                            <Button type="primary" style={{width:"30%", marginLeft:"33%"}} htmlType="submit" size="large">登记</Button>
                                             <Button type="solid" style={{width:"30%"}} size="large" onClick={this.clearForm}>重置</Button>
+                                            <Button type="dashed" onClick={this.setFirstContent}  size="large"  style={{width:"62%", marginLeft:"33%", marginTop:20}}>刷新机型</Button>
                                         </FormItem>
                                     </Form>
                             </Col>

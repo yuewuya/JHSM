@@ -7,7 +7,7 @@ export function CCFetch(url,param){
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(param)
-  }).then((response) => response.json())
+  }).then(response => response.json())
     .then((res) => {
         return res
     })

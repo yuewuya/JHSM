@@ -39,6 +39,7 @@ export default class OrdersList extends React.Component {
         this.setState({ loading: true });
         let param = {};
         param.pageNum = 0;
+        param.type = '普通订单';
         CCFetch("/orders/list",param).then((res) => {
             this.setData(res,param)
         })
@@ -140,7 +141,7 @@ export default class OrdersList extends React.Component {
             }
         },{
             title: '操作',
-            width:200,
+            width:250,
             fixed: 'right',
             render: (text,record) => {
                 return (
@@ -159,7 +160,7 @@ export default class OrdersList extends React.Component {
                     dataSource={this.state.data} 
                     pagination={false}
                     columns={columns} 
-                    scroll={{ x: 1555 }}
+                    scroll={{ x: 1605 }}
                 />
                 <Pagination showQuickJumper total={this.state.totalCount} onChange={this.pageChange} style={{marginTop:40,float:"right"}} />
             </div>

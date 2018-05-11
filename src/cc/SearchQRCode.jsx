@@ -34,7 +34,7 @@ export default class SearchQRCode extends Component{
             let child = [];
             for(let i in res.data){
                 child.push(
-                    <Timeline.Item color="green">{moment(res.data[i].dateTime).format("YYYY-MM-DD HH:mm:ss") + " " + res.data[i].describe}</Timeline.Item>
+                    <Timeline.Item color="green">{moment(res.data[i].createTime).format("YYYY-MM-DD HH:mm:ss") + " " + res.data[i].msg}</Timeline.Item>
                 )
             }
             this.setState({

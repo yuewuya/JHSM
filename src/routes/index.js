@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import AuthBasic from '../components/auth/Basic';
-import RouterEnter from '../components/auth/RouterEnter';
 import CCLogin from '../cc/CCLogin'
 import Index from '../components/ccp1/Index'
 import OrdersList from '../components/ccp2/EditableTable'
